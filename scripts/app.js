@@ -230,7 +230,7 @@ APP.Main = (function() {
 
       // Set up the next bit of the animation if there is more to do.
       if (Math.abs(left - target) > 0.5) {
-        setTimeout(animate, 4);
+        requestAnimationFrame(animate);
       } else {
         left = target;
         inDetails = false;
@@ -245,17 +245,18 @@ APP.Main = (function() {
     // every few milliseconds. That's going to keep
     // it all tight. Or maybe we're doing visual changes
     // and they should be in a requestAnimationFrame
-    setTimeout(animate, 4);
+    requestAnimationFrame(animate);
   }
 
   /**
    * Does this really add anything? Can we do this kind
    * of work in a cheaper way?
    */
+   var storyElements = document.querySelectorAll('.story'); // takes off time by a lot
   function colorizeAndScaleStories() {
 
-    var storyElements = document.querySelectorAll('.story');
 
+    //console.log(storyElements);
     // It does seem awfully broad to change all the
     // colors every time!
     for (var s = 0; s < storyElements.length; s++) {
@@ -294,12 +295,14 @@ APP.Main = (function() {
     }
 
   });
+  var header = $('header'); // move out
+    var headerTitles = header.querySelector('.header__title-wrapper'); // moveout
 
   main.addEventListener('scroll', function() {
 
-    var header = $('header');
-    var headerTitles = header.querySelector('.header__title-wrapper');
+
     var scrollTopCapped = Math.min(70, main.scrollTop);
+   //console.log(headerTitles);
     var scaleString = 'scale(' + (1 - (scrollTopCapped / 300)) + ')';
 
     colorizeAndScaleStories();
